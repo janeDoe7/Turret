@@ -211,9 +211,6 @@ public class Submarine extends Application {
         score.setX(w * 3 / 4);
         score.setY(h * 3 / 4);
 
-        public void updateScore() {
-            score.setText("Score: " + score);
-        }
 
         // main game loop
         new AnimationTimer() {
@@ -224,7 +221,7 @@ public class Submarine extends Application {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                updateScore();
+                score.setText("Score: " + score);
             }
         }.start();
 
