@@ -52,7 +52,16 @@ public class Submarine extends Application {
 
         scene.setOnKeyPressed(
                 e -> {
-                    if (e.getCode().equals(KeyCode.LEFT)) {
+                    if (e.getCode().equals(KeyCode.SPACE)) {
+                        ImageView torpedoView = new ImageView();
+                        Image torpedoImg = new Image("File:./images/torpedo.png");
+                        torpedoView.setImage(torpedoImg);
+                        torpedoView.setX(submarineView.getX());
+                        torpedoView.setY(submarineView.getY() - submarineImg.getHeight() / 2 -
+                                torpedoImg.getHeight() / 2);
+                        torpedoView.setRotate(submarineView.getRotate());
+                        pane.getChildren().add(torpedoView);
+                    } else if (e.getCode().equals(KeyCode.LEFT)) {
                         submarineView.setRotate(submarineView.getRotate() - 15);
                     } else if (e.getCode().equals(KeyCode.RIGHT)) {
                         submarineView.setRotate(submarineView.getRotate() + 15);
