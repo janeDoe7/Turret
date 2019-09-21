@@ -47,10 +47,6 @@ public class Submarine extends Application {
         }
     }
 
-    public void spawnNewEnemy() {
-        // to be implemented
-    }
-
     public void start(Stage initStage) {
         initStage = stage;
         initStage.setTitle("Submarine!");
@@ -167,11 +163,21 @@ public class Submarine extends Application {
         enemyIsAlive = new boolean[1];
         enemyIsAlive[0] = true;
 
+        public void spawnNewEnemy() {
+            ImageView newEnemy = new ImageView(enemySubImage);
+            if (Math.random() < 0.5) {
+                newEnemy.setX(0);
+                newEnemy.setY(Math.random());
+            } else {
+                newEnemy.setY(0);
+                newEnemy.setX(Math.random());
+            }
+            pane.getChildren().add(newEnemy);
+        }
+
         // main game loop
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                gc.clearRect(0,0,w,h);
-                gc.drawImage(0,0,backgroundImage);
 
                 if (Math.random() < 0.016666)
                     spawnNewEnemy();
@@ -183,6 +189,7 @@ public class Submarine extends Application {
                 }
             }
         }.start();
+
         initStage.show();   
-}
+    }
 }
