@@ -78,12 +78,12 @@ public class Submarine extends Application {
                         ImageView torpedoView = new ImageView(torpedoImg);
                         torpedoView.setFitWidth(torpedoImg.getWidth() / 50);
                         torpedoView.setFitHeight(torpedoImg.getHeight() / 50);
-                        torpedoView.setX(w / 2 - torpedoView.getFitWidth() / 2 +
-                                (submarineView.getFitHeight() + torpedoView.getFitHeight()) / 2 *
-                                        Math.sin(Math.PI / 180 * submarineView.getRotate()));
-                        torpedoView.setY((h - torpedoView.getFitWidth()) / 2 -
-                                (submarineView.getFitHeight() + torpedoView.getFitHeight()) / 2 *
-                                        Math.cos(Math.PI / 180 * submarineView.getRotate()));
+                        torpedoView.setX((w - torpedoView.getFitWidth() +
+                                (submarineView.getFitHeight() + torpedoView.getFitHeight()) *
+                                        Math.sin(Math.PI / 180 * submarineView.getRotate())) / 2);
+                        torpedoView.setY((h - torpedoView.getFitWidth() -
+                                (submarineView.getFitHeight() + torpedoView.getFitHeight()) *
+                                        Math.cos(Math.PI / 180 * submarineView.getRotate())) / 2);
                         torpedoView.setRotate(submarineView.getRotate());
                         pane.getChildren().add(torpedoView);
                     } else if (e.getCode().equals(KeyCode.LEFT)) {
