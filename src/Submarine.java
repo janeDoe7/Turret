@@ -167,9 +167,9 @@ public class Submarine extends Application {
                                         torpedoView.setY(torpedoView.getY() -
                                                 10 * Math.cos(Math.PI / 180 * rotate));
                                         pane.getChildren().add(torpedoView);
-                                        for (Enemy tempEnemy : enemies) {
+                                        for (int i = 0; i < enemies.size(); i++) {
                                             testCollision(torpedoView,
-                                                    tempEnemy, false);
+                                                    enemies.get(i), false);
                                         }
                                     }
                                 }
