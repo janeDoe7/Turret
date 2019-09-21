@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -70,6 +71,7 @@ public class Submarine extends Application {
                 enemyView.setImage(null);
                 pane.getChildren().remove(imageView);
                 pane.getChildren().remove(enemyView);
+                killAllEnemies();
             } else {
                 enemy.setAlive(false);
                 enemies.remove(enemy);
@@ -200,6 +202,17 @@ public class Submarine extends Application {
 
         ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
 
+        // Add a score.
+        Text score = new Text();
+        score.setFont(new Font("Wingdings", 20));
+        score.setText("Score: 0");
+        score.setX(w * 3 / 4);
+        score.setY(h * 3 / 4);
+
+        public void updateScore() {
+            score.setText("Score: " + score.toString());
+        }
+
         // main game loop
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
@@ -209,6 +222,7 @@ public class Submarine extends Application {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
+                updateScore();
             }
         }.start();
 
