@@ -1,6 +1,7 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -22,7 +23,8 @@ public class Submarine extends Application {
     private static Group root = new Group();
     private static Canvas canvas = new Canvas(1600, 900);
     private static Pane pane = new Pane();
-    private static boolean press = true;
+    private static boolean press = true, playerIsAlive = true;
+    private static boolean[] enemyIsAlive;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,6 +32,19 @@ public class Submarine extends Application {
 
     private static void setPress(boolean value) {
         press = value;
+    }
+
+    //tests collision between two objects. destroys both if they collide.
+    private void testCollision(ImageView imageView1, ImageView imageView2, boolean isPlayer, int index) {
+        if (imageView1.getBoundsInParent().intersects(imageView2.getBoundsInParent())) {
+            pane.getChildren().remove(imageView1);
+            pane.getChildren().remove(imageView2);
+            if (isPlayer) {
+                playerIsAlive = false;
+            } else {
+                enemyIsAlive[index] = false;
+            }
+        }
     }
 
     public void start(Stage initStage) {
@@ -65,6 +80,23 @@ public class Submarine extends Application {
         initStage.setHeight(h);
         initStage.show();
 
+        // enemy submarine
+        // TODO: get rid of this
+        // Will be replaced by randomly generated enemies
+        ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
+        enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
+        pane.getChildren().add(enemySubmarineView);
+        enemyIsAlive = new boolean[1];
+        enemyIsAlive[0] = true;
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
+                if (enemyIsAlive[0]) {
+                    pane.getChildren().remove(enemySubmarineView);
+                    enemySubmarineView.setY(enemySubmarineView.getY() + 1);
+                    pane.getChildren().add(enemySubmarineView);
+                }
+            }
+        }.start();
 
         // launch submarine
         ImageView submarineView = new ImageView();
@@ -95,6 +127,7 @@ public class Submarine extends Application {
                                         Math.cos(Math.PI / 180 * rotate)) / 2);
                         torpedoView.setRotate(rotate);
                         pane.getChildren().add(torpedoView);
+
                         // animate torpedo
                         new AnimationTimer() {
                             public void handle(long currentNanoTime) {
@@ -102,6 +135,7 @@ public class Submarine extends Application {
                                 double y = torpedoView.getY();
                                 // remove previous torpedo frame
                                 pane.getChildren().remove(torpedoView);
+
                                 // do nothing if off screen else move torpedo
                                 if (!(x < -torpedoView.getFitWidth() || x > w ||
                                         y < - torpedoView.getFitHeight() || y > h)) {
@@ -110,6 +144,9 @@ public class Submarine extends Application {
                                     torpedoView.setY(torpedoView.getY() -
                                             10 * Math.cos(Math.PI / 180 * rotate));
                                     pane.getChildren().add(torpedoView);
+                                    if (enemyIsAlive[0]) {
+                                        testCollision(torpedoView, enemySubmarineView, false, 0);
+                                    }
                                 }
                             }
                         }.start();
@@ -122,6 +159,7 @@ public class Submarine extends Application {
                     }
                 }
         );
+
         //make sure user has released SPACE before firing again
         subScene.setOnKeyReleased(
                 e -> {
