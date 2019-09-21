@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -33,6 +34,9 @@ public class Turret extends Application {
         initStage.setWidth(w);
         initStage.setHeight(h);
         initStage.show();
+
+        Image turretImg = new Image("File:./images/turret.png");
+        ctx.drawImage(turretImg, (w / 2) - (turretImg.getWidth() / 2), (h / 2) - (turretImg.getHeight() / 2));
     }
 
 }
