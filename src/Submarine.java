@@ -210,7 +210,7 @@ public class Submarine extends Application {
         score.setText("Score: 0");
         score.setX(w * 3 / 4);
         score.setY(h * 3 / 4);
-
+        root.getChildren().add(score);
 
         // main game loop
         new AnimationTimer() {
