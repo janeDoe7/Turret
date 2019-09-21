@@ -64,6 +64,7 @@ public class Submarine extends Application {
             if (isPlayer) {
                 try {
                     player.setAlive(false);
+                    imageView.setRotate(0);
                     while (enemies.size() > 0) {
                        Enemy tempEnemy = enemies.get(0);
                        tempEnemy.setAlive(false);
@@ -210,7 +211,7 @@ public class Submarine extends Application {
         scoreText.setText("Score: 0");
         scoreText.setX(w * 3 / 4);
         scoreText.setY(h * 1 / 5);
-        root.getChildren().add(score);
+        root.getChildren().add(scoreText);
 
         // main game loop
         new AnimationTimer() {
