@@ -16,7 +16,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 
 public class Submarine extends Application {
     private static Stage stage = new Stage();
@@ -24,7 +26,8 @@ public class Submarine extends Application {
     private static Canvas canvas = new Canvas(1600, 900);
     private static Pane pane = new Pane();
     private static boolean press = true, playerIsAlive = true;
-    private static boolean[] enemyIsAlive;
+    private static ArrayList<Boolean> enemyIsAlive;
+    private static double w, h;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,6 +35,17 @@ public class Submarine extends Application {
 
     private static void setPress(boolean value) {
         press = value;
+    }
+
+    public void spawnNewEnemy(Image enemySubImage) {
+        double theta = Math.random() * 360;
+        double target_x = w / 2;
+        double target_y = h / 2;
+        double pos_x = w / 2 + 800 * Math.sin(theta);
+        double pos_y = h / 2 - 800 * Math.cos(theta);
+        Enemy enemy = new Enemy(enemySubImage, target_x, target_y, pos_x, pos_y, theta, 1);
+        pane.getChildren().add(enemy);
+        enemyIsAlive.add(true);
     }
 
     //tests collision between two objects. destroys both if they collide.
@@ -42,13 +56,9 @@ public class Submarine extends Application {
             if (isPlayer) {
                 playerIsAlive = false;
             } else {
-                enemyIsAlive[index] = false;
+                enemyIsAlive.set(index, Boolean.FALSE);
             }
         }
-    }
-
-    public void spawnNewEnemy() {
-        // to be implemented
     }
 
     public void start(Stage initStage) {
@@ -71,8 +81,8 @@ public class Submarine extends Application {
         Scene backgroundScene = new Scene(background);
         initStage.setScene(backgroundScene);
 
-        double w = screenSize.getWidth();
-        double h = screenSize.getHeight();
+        w = screenSize.getWidth();
+        h = screenSize.getHeight();
         Canvas canvas = new Canvas(w, h);
         GraphicsContext ctx = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
@@ -131,11 +141,9 @@ public class Submarine extends Application {
                                     torpedoView.setY(torpedoView.getY() -
                                             10 * Math.cos(Math.PI / 180 * rotate));
                                     pane.getChildren().add(torpedoView);
-                                    /*
-                                    if (enemyIsAlive[0]) {
+                                    if (enemyIsAlive.get(0)) {
                                         testCollision(torpedoView, enemySubmarineView, false, 0);
                                     }
-                                    */
                                 }
                             }
                         }.start();
@@ -158,24 +166,17 @@ public class Submarine extends Application {
                 }
         );
 
-        // enemy submarines
-        // TODO: Use random generating enemies
-        // Will be replaced by randomly generated enemies
         ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
-
-        enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
-        pane.getChildren().add(enemySubmarineView);
-        enemyIsAlive = new boolean[1];
-        enemyIsAlive[0] = true;
 
         // main game loop
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
+
                 if (Math.random() < 0.016666) {
-                    spawnNewEnemy();
+                    spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                if (enemyIsAlive[0]) {
+                if (enemyIsAlive.get(0)) {
                     pane.getChildren().remove(enemySubmarineView);
                     enemySubmarineView.setY(enemySubmarineView.getY() + 1);
                     pane.getChildren().add(enemySubmarineView);
