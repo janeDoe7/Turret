@@ -30,7 +30,7 @@ public class Submarine extends Application {
     private static ArrayList<Enemy> enemies = new ArrayList<>();
     private static double w, h;
     private static ImageView submarineView = new ImageView();
-    private static int killCount = 0;
+    private static int killCount = 0, score = 0;
 
 
     public static void main(String[] args) {
@@ -45,10 +45,11 @@ public class Submarine extends Application {
         double theta = Math.random() * 360;
         double target_x = (w - enemySubImage.getWidth()) / 2;
         double target_y = (h - enemySubImage.getHeight()) / 2;
-        double pos_x = (w - enemySubImage.getWidth()) / 2 + 500 * Math.sin(Math.PI / 180 * theta);
-        double pos_y = (h - enemySubImage.getHeight()) / 2 - 500 * Math.cos(Math.PI / 180 * theta);
+        double pos_x = (w - enemySubImage.getWidth()) / 2 + 700 * Math.sin(Math.PI / 180 * theta);
+        double pos_y = (h - enemySubImage.getHeight()) / 2 - 700 * Math.cos(Math.PI / 180 * theta);
+        double factor = 1 + killCount / 20.0;
         enemies.add(new Enemy(enemySubImage,
-                submarineView, pane, enemies.size(), target_x, target_y, pos_x, pos_y, theta, 1.0));
+                submarineView, pane, target_x, target_y, pos_x, pos_y, theta, factor * (Math.random() + 1.0)));
         enemies.get(enemies.size() - 1).animate();
     }
 
@@ -61,25 +62,25 @@ public class Submarine extends Application {
             if (isPlayer) {
                 try {
                     player.setAlive(false);
-                    enemy.setAlive(false);
-                    enemies.remove(enemy);
-                    for (int i = enemy.getIndex(); i < enemies.size(); i++) {
-                       enemies.get(i).setIndex(i);
+                    while (enemies.size() > 0) {
+                       Enemy tempEnemy = enemies.get(0);
+                       tempEnemy.setAlive(false);
+                       enemies.remove(tempEnemy);
+                       ImageView tempView = tempEnemy.getImageView();
+                       tempView.setImage(null);
+                       pane.getChildren().remove(tempView);
                     }
                 } catch (IndexOutOfBoundsException e) {}
-                enemyView.setImage(null);
                 pane.getChildren().remove(imageView);
-                pane.getChildren().remove(enemyView);
+                killCount = 0;
             } else {
                 enemy.setAlive(false);
                 enemies.remove(enemy);
-                for (int i = enemy.getIndex(); i < enemies.size(); i++) {
-                    enemies.get(i).setIndex(i);
-                }
                 enemyView.setImage(null);
                 pane.getChildren().remove(imageView);
                 pane.getChildren().remove(enemyView);
                 killCount++;
+                score += (int)(enemy.getSpeed() * 100);
             }
         }
     }
@@ -164,26 +165,27 @@ public class Submarine extends Application {
                                         torpedoView.setY(torpedoView.getY() -
                                                 10 * Math.cos(Math.PI / 180 * rotate));
                                         pane.getChildren().add(torpedoView);
-                                        for (int i = 0; i < enemies.size(); i++) {
+                                        for (Enemy enemy : enemies) {
                                             testCollision(torpedoView,
-                                                    enemies.get(i), false);
+                                                    enemy, false);
                                         }
                                     }
                                 }
                             }.start();
-                        } else {
+                        }
+                    // restart on shift
+                    } else if (e.getCode().equals(KeyCode.SHIFT) && !player.getAlive()) {
                             pane.getChildren().add(submarineView);
                             player.setAlive(true);
-                        }
                     // rotate left
                     } else if (e.getCode().equals(KeyCode.LEFT)) {
                         if (player.getAlive()) {
-                            submarineView.setRotate(submarineView.getRotate() - 5);
+                            submarineView.setRotate(submarineView.getRotate() - 10);
                         }
                     // rotate right
                     } else if (e.getCode().equals(KeyCode.RIGHT)) {
                         if (player.getAlive()) {
-                            submarineView.setRotate(submarineView.getRotate() + 5);
+                            submarineView.setRotate(submarineView.getRotate() + 10);
                         }
                     }
                 }
@@ -205,7 +207,7 @@ public class Submarine extends Application {
             public void handle(long currentNanoTime) {
 
                 // generate new enemy at random interval
-                if (Math.random() < 0.005 + 0.0002 * killCount && player.getAlive()) {
+                if (Math.random() < 0.005 + 0.00025 * killCount && player.getAlive()) {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 

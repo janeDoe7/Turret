@@ -6,7 +6,6 @@ import javafx.scene.layout.Pane;
 public class Enemy {
     private ImageView imgView, playerView;
     private Pane pane;
-    private int index;
     private Point target;
     private Point[] path;
     private int pathCounter = 0; // how many points have we looked through?
@@ -14,11 +13,10 @@ public class Enemy {
     private boolean isAlive = true;
 
     public Enemy(Image img, ImageView playerView, Pane pane,
-                 int index, double target_x, double target_y, double pos_x, double pos_y, double theta, double speed)  {
+                 double target_x, double target_y, double pos_x, double pos_y, double theta, double speed)  {
         this.imgView = new ImageView(img);
         this.playerView = playerView;
         this.pane = pane;
-        this.index = index;
         this.imgView.setX(pos_x);
         this.imgView.setY(pos_y);
         this.target = new Point((int)target_x, (int)target_y);
@@ -31,17 +29,12 @@ public class Enemy {
         isAlive = alive;
     }
 
-    public int getIndex() {
-        return index;
+    public double getSpeed() {
+        return speed;
     }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
 
     private Point[] constructPoints(int start_x, int start_y) {
-        double internal_speed_constant = 500.0;
+        double internal_speed_constant = 700.0;
         int max_i = (int)(internal_speed_constant / speed);
         Point[] points = new Point[max_i];
         for (int i = 0; i < max_i; i++) {
