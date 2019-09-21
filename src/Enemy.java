@@ -31,6 +31,10 @@ public class Enemy {
         isAlive = alive;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public void setIndex(int index) {
         this.index = index;
     }
@@ -58,6 +62,7 @@ public class Enemy {
     public ImageView getImageView() { return this.imgView; }
 
     public void animate() {
+        Enemy enemy = this;
         pane.getChildren().add(imgView);
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
@@ -65,7 +70,7 @@ public class Enemy {
                 Point p = getNextLocation();
                 imgView.setX(p.getX());
                 imgView.setY(p.getY());
-                Submarine.testCollision(imgView, playerView, true, index);
+                Submarine.testCollision(playerView, enemy,true);
             }
         }.start();
     }

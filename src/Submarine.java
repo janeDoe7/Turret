@@ -53,34 +53,32 @@ public class Submarine extends Application {
     }
 
     //tests collision between two objects. destroys both if they collide.
-    public static void testCollision(ImageView imageView1, ImageView imageView2, boolean isPlayer, int index) {
-        if (imageView1.getBoundsInParent().intersects(imageView2.getBoundsInParent())) {
-            pane.getChildren().remove(imageView1);
-            pane.getChildren().remove(imageView2);
+    public static void testCollision(ImageView imageView, Enemy enemy, boolean isPlayer) {
+        ImageView enemyView = enemy.getImageView();
+        if (imageView.getBoundsInParent().intersects(enemyView.getBoundsInParent())) {
+            pane.getChildren().remove(imageView);
+            pane.getChildren().remove(enemyView);
             if (isPlayer) {
                 try {
                     player.setAlive(false);
-                    enemies.get(index).setAlive(false);
-                    enemies.remove(index);
-
-                for (int i = index; i < enemies.size(); i++) {
-                    enemies.get(i).setIndex(i);
-                }
-
-                enemies.get(index).setAlive(true);
+                    enemy.setAlive(false);
+                    enemies.remove(enemy);
+                    for (int i = enemy.getIndex(); i < enemies.size(); i++) {
+                       enemies.get(i).setIndex(i);
+                    }
                 } catch (IndexOutOfBoundsException e) {}
-                imageView1.setImage(null);
-                pane.getChildren().remove(submarineView);
+                enemyView.setImage(null);
+                pane.getChildren().remove(imageView);
+                pane.getChildren().remove(enemyView);
             } else {
-                enemies.get(index).setAlive(false);
-                enemies.remove(index);
-                for (int i = index; i < enemies.size(); i++) {
+                enemy.setAlive(false);
+                enemies.remove(enemy);
+                for (int i = enemy.getIndex(); i < enemies.size(); i++) {
                     enemies.get(i).setIndex(i);
                 }
-                enemies.get(index).setAlive(true);
-                imageView2.setImage(null);
-                pane.getChildren().remove(imageView1);
-                pane.getChildren().remove(imageView2);
+                enemyView.setImage(null);
+                pane.getChildren().remove(imageView);
+                pane.getChildren().remove(enemyView);
                 killCount++;
             }
         }
@@ -168,7 +166,7 @@ public class Submarine extends Application {
                                         pane.getChildren().add(torpedoView);
                                         for (int i = 0; i < enemies.size(); i++) {
                                             testCollision(torpedoView,
-                                                    enemies.get(i).getImageView(), false, i);
+                                                    enemies.get(i), false);
                                         }
                                     }
                                 }
