@@ -12,7 +12,6 @@ public class Turret extends Application {
     private static Stage stage = new Stage();
     private static Group root = new Group();
     private static Canvas canvas = new Canvas(1600, 900);
-    private static GraphicsContext context = canvas.getGraphicsContext2D();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,8 +34,10 @@ public class Turret extends Application {
         initStage.setHeight(h);
         initStage.show();
 
-        Image turretImg = new Image("File:./images/turret.png");
+        Image turretImg = new Image("File:./images/submarine.png");
         ctx.drawImage(turretImg, (w / 2) - (turretImg.getWidth() / 2), (h / 2) - (turretImg.getHeight() / 2));
+
+
     }
 
 }
