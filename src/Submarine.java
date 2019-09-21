@@ -47,6 +47,10 @@ public class Submarine extends Application {
         }
     }
 
+    public void spawnNewEnemy() {
+        // to be implemented
+    }
+
     public void start(Stage initStage) {
         initStage = stage;
         initStage.setTitle("Submarine!");
@@ -63,6 +67,7 @@ public class Submarine extends Application {
                 background.add(new ImageView(waterImg), y, x);
             }
         }
+
         Scene backgroundScene = new Scene(background);
         initStage.setScene(backgroundScene);
 
@@ -80,25 +85,6 @@ public class Submarine extends Application {
         initStage.setHeight(h);
         initStage.show();
 
-        // enemy submarine
-        // TODO: Use random generating enemies
-        // Will be replaced by randomly generated enemies
-        ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
-        double theta = Math.random() * 360;
-
-        enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
-        pane.getChildren().add(enemySubmarineView);
-        enemyIsAlive = new boolean[1];
-        enemyIsAlive[0] = true;
-        new AnimationTimer() {
-            public void handle(long currentNanoTime) {
-                if (enemyIsAlive[0]) {
-                    pane.getChildren().remove(enemySubmarineView);
-                    enemySubmarineView.setY(enemySubmarineView.getY() + 1);
-                    pane.getChildren().add(enemySubmarineView);
-                }
-            }
-        }.start();
 
         // launch submarine
         ImageView submarineView = new ImageView();
@@ -170,5 +156,33 @@ public class Submarine extends Application {
                     }
                 }
         );
+
+
+        // enemy submarines
+        // TODO: Use random generating enemies
+        // Will be replaced by randomly generated enemies
+        Image enemySubImage = new Image("File:./images/submarine.png")
+
+        enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
+        pane.getChildren().add(enemySubmarineView);
+        enemyIsAlive = new boolean[1];
+        enemyIsAlive[0] = true;
+
+        // main game loop
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
+                gc.clearRect(0,0,w,h);
+                gc.drawImage(0,0,backgroundImage);
+
+                if (Math.random() < 0.016666)
+                    spawnNewEnemy();
+
+                if (enemyIsAlive[0]) {
+                    pane.getChildren().remove(enemySubmarineView);
+                    enemySubmarineView.setY(enemySubmarineView.getY() + 1);
+                    pane.getChildren().add(enemySubmarineView);
+                }
+            }
+        }.start();
     }
 }
