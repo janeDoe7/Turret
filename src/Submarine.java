@@ -83,7 +83,7 @@ public class Submarine extends Application {
                 pane.getChildren().remove(imageView);
                 pane.getChildren().remove(enemyView);
                 killCount++;
-                score += (int)(enemy.getSpeed() * 100);
+                score += ((int)(enemy.getSpeed() * 100) / 10 * 10);
             }
         }
     }
