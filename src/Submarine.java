@@ -80,10 +80,17 @@ public class Submarine extends Application {
         initStage.setHeight(h);
         initStage.show();
 
+
+
+
+
+
         // enemy submarine
-        // TODO: get rid of this
+        // TODO: Use random generating enemies
         // Will be replaced by randomly generated enemies
         ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
+        double theta = Math.random() * 360;
+
         enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
         pane.getChildren().add(enemySubmarineView);
         enemyIsAlive = new boolean[1];
@@ -98,14 +105,16 @@ public class Submarine extends Application {
             }
         }.start();
 
+
+
         // launch submarine
         ImageView submarineView = new ImageView();
         Image submarineImg = new Image("File:./images/submarine.png");
         submarineView.setImage(submarineImg);
         submarineView.setFitWidth(submarineImg.getWidth());
         submarineView.setFitHeight(submarineImg.getHeight());
-        submarineView.setX(w / 2 - submarineView.getFitWidth() / 2);
-        submarineView.setY(h / 2 - submarineView.getFitHeight() / 2);
+        submarineView.setX((w - submarineView.getFitWidth()) / 2);
+        submarineView.setY((h - submarineView.getFitHeight()) / 2);
         pane.getChildren().add(submarineView);
 
         // handle key pressing
@@ -169,5 +178,4 @@ public class Submarine extends Application {
                 }
         );
     }
-
 }
