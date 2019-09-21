@@ -2,7 +2,7 @@ public class Enemy {
     private ImageView imgView;
     private Point target;
     private Point[] path;
-    private int[] pathCounter = 0; // how many points have we looked through?
+    private int pathCounter = 0; // how many points have we looked through?
     private double speed;
 
     public Enemy(Image, target_x, target_y, pos_x, pos_y, speed)  {
@@ -15,24 +15,13 @@ public class Enemy {
     }
 
     private Point[] constructPoints(int start_x, int start_y) {
-        // using Bresenham's line algorithm to approximate a path
-        int s_x, s_y, e_x, e_y, dx, dy, i_1, i_2, d = 0;
-        int s_x = start_x;
-        int s_y = start_y;
-        int e_x = target.getX();
-        int e_y = target.getY();
-        int dx = e_x - s_x;
-        int dy = e_y - s_y;
-        int i_1 = 2 * dy;
-        int i_2 = 2 * (dy - dx);
-        int d = i_1 - dx;
-
-        if (dx < 0) {
-            int x = e_x;
-            int x_end = s_x;
-            int y = e_y;
+        int internal_speed_constant = 10;
+        int max_i = internal_speed_constant / this.speed;
+        Point[] points = new Point[max_x]
+        for (int i = 0; x < max_i; i++) {
+            points[i] = new Point((start_x - target_x) * (i+1) / max_i, (start_y - target_y) * (i+1) / max_i);
         }
-        
+        return points
     }
 
     public Point getNextLocation() {
