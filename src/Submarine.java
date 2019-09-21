@@ -131,9 +131,11 @@ public class Submarine extends Application {
                                     torpedoView.setY(torpedoView.getY() -
                                             10 * Math.cos(Math.PI / 180 * rotate));
                                     pane.getChildren().add(torpedoView);
+                                    /*
                                     if (enemyIsAlive[0]) {
                                         testCollision(torpedoView, enemySubmarineView, false, 0);
                                     }
+                                    */
                                 }
                             }
                         }.start();
@@ -156,11 +158,10 @@ public class Submarine extends Application {
                 }
         );
 
-
         // enemy submarines
         // TODO: Use random generating enemies
         // Will be replaced by randomly generated enemies
-        Image enemySubImage = new Image("File:./images/submarine.png")
+        ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
 
         enemySubmarineView.setX(w / 2 - enemySubmarineView.getImage().getWidth() / 2);
         pane.getChildren().add(enemySubmarineView);
@@ -170,11 +171,9 @@ public class Submarine extends Application {
         // main game loop
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                gc.clearRect(0,0,w,h);
-                gc.drawImage(0,0,backgroundImage);
-
-                if (Math.random() < 0.016666)
+                if (Math.random() < 0.016666) {
                     spawnNewEnemy();
+                }
 
                 if (enemyIsAlive[0]) {
                     pane.getChildren().remove(enemySubmarineView);
@@ -183,6 +182,7 @@ public class Submarine extends Application {
                 }
             }
         }.start();
-        initStage.show();   
-}
+
+        initStage.show();
+    }
 }
