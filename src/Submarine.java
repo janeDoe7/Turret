@@ -60,11 +60,10 @@ public class Submarine extends Application {
         Image waterImg = new Image("File:./images/water.jpg");
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 3; y++) {
-                background.add(new ImageView(waterImg), y, x);
+                background.add(new ImageView(waterImg), x, y);
             }
         }
-        Scene backgroundScene = new Scene(background);
-        initStage.setScene(backgroundScene);
+        root.getChildren().add(background);
 
         double w = screenSize.getWidth();
         double h = screenSize.getHeight();
