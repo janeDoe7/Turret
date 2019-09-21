@@ -80,11 +80,6 @@ public class Submarine extends Application {
         initStage.setHeight(h);
         initStage.show();
 
-
-
-
-
-
         // enemy submarine
         // TODO: Use random generating enemies
         // Will be replaced by randomly generated enemies
@@ -104,8 +99,6 @@ public class Submarine extends Application {
                 }
             }
         }.start();
-
-
 
         // launch submarine
         ImageView submarineView = new ImageView();
