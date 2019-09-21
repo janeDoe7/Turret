@@ -5,7 +5,7 @@ public class Enemy {
     private int pathCounter = 0; // how many points have we looked through?
     private double speed;
 
-    public Enemy(Image, target_x, target_y, pos_x, pos_y, speed)  {
+    public Enemy(Image img, int target_x, int target_y, int pos_x, int pos_y, int speed)  {
         this.imgView = new ImageView(imgView);
         this.imgView.setX(pos_x);
         this.imgView.setY(pos_Y);
