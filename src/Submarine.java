@@ -75,6 +75,7 @@ public class Submarine extends Application {
                 } catch (IndexOutOfBoundsException e) {}
                 pane.getChildren().remove(imageView);
                 killCount = 0;
+                score = 0;
             } else {
                 enemy.setAlive(false);
                 enemies.remove(enemy);
@@ -209,7 +210,7 @@ public class Submarine extends Application {
         scoreText.setText("Score: 0");
         scoreText.setX(w * 3 / 4);
         scoreText.setY(h * 3 / 4);
-        root.getChildren().add(score);
+        root.getChildren().add(scoreText);
 
         // main game loop
         new AnimationTimer() {
