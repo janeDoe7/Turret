@@ -29,13 +29,29 @@ public class Submarine extends Application {
         initStage = stage;
         initStage.setTitle("Submarine!");
         Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+
+        // The background
+        GridPane background = new GridPane();
+        background.setHgap(0);
+        background.setVgap(0);
+
+        ImageView waterView = new ImageView();
+        Image waterImg = new Image("File:./images/water.jpg");
+        waterView.setImage(waterImg);
+        for (int x = 0; x < 6; x++)
+            for (int y = 0; y < 3; y++) {
+                background.add(waterImg);
+            }
+        Scene backgroundScene = new Scene(background);
+        initStage.setScene(backgroundScene);
+
         double w = screenSize.getWidth();
         double h = screenSize.getHeight();
         Canvas canvas = new Canvas(w, h);
         GraphicsContext ctx = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
         root.getChildren().add(pane);
-        Scene scene = new Scene(root);
+        Scene subScene = new Scene(root);
         initStage.setX(screenSize.getMinX());
         initStage.setY(screenSize.getMinY());
         initStage.setScene(scene);
@@ -43,6 +59,8 @@ public class Submarine extends Application {
         initStage.setHeight(h);
         initStage.show();
 
+
+        // The submarine launches
         ImageView submarineView = new ImageView();
         Image submarineImg = new Image("File:./images/submarine.png");
         submarineView.setImage(submarineImg);
@@ -50,10 +68,13 @@ public class Submarine extends Application {
         submarineView.setY(h / 2 - submarineImg.getHeight() / 2);
         pane.getChildren().add(submarineView);
 
-        scene.setOnKeyPressed(
+        // Key handling
+        subScene.setOnKeyPressed(
                 e -> {
+                    // rotate left
                     if (e.getCode().equals(KeyCode.LEFT)) {
                         submarineView.setRotate(submarineView.getRotate() - 15);
+                    // rotate right
                     } else if (e.getCode().equals(KeyCode.RIGHT)) {
                         submarineView.setRotate(submarineView.getRotate() + 15);
                     }
