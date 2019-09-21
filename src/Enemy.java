@@ -1,3 +1,6 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class Enemy {
     private ImageView imgView;
     private Point target;
@@ -5,7 +8,7 @@ public class Enemy {
     private int pathCounter = 0; // how many points have we looked through?
     private double speed;
 
-    public Enemy(Image, target_x, target_y, pos_x, pos_y, speed)  {
+    public Enemy(Image imgView, double target_x, double target_y, pos_x, pos_y, speed)  {
         this.imgView = new ImageView(imgView);
         this.imgView.setX(pos_x);
         this.imgView.setY(pos_Y);
@@ -21,7 +24,7 @@ public class Enemy {
         for (int i = 0; x < max_i; i++) {
             points[i] = new Point((start_x - target_x) * (i+1) / max_i, (start_y - target_y) * (i+1) / max_i);
         }
-        return points
+        return points;
     }
 
     public Point getNextLocation() {

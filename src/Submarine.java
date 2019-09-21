@@ -25,10 +25,12 @@ public class Submarine extends Application {
     private static Group root = new Group();
     private static Canvas canvas = new Canvas(1600, 900);
     private static Pane pane = new Pane();
-    private static boolean press = true, playerIsAlive = true;
+    private static Player player;
+    private static boolean press = true;
     private static ArrayList<Enemy> enemies = new ArrayList<>();
     private static double w, h;
     ImageView submarineView = new ImageView();
+    private static int killCount = 0;
 
 
     public static void main(String[] args) {
@@ -55,10 +57,11 @@ public class Submarine extends Application {
             pane.getChildren().remove(imageView1);
             pane.getChildren().remove(imageView2);
             if (isPlayer) {
-                playerIsAlive = false;
+                player.setAlive(false);
                 pane.getChildren().remove(submarineView);
             } else {
                 enemies.remove(enemies.get(index));
+                killCount++;
             }
         }
     }
@@ -110,7 +113,7 @@ public class Submarine extends Application {
                 e -> {
                     // fire torpedo
                     if (e.getCode().equals(KeyCode.SPACE) && press) {
-                        if (playerIsAlive) {
+                        if (player.getAlive()) {
                             setPress(false);
                             double rotate = submarineView.getRotate();
                             Image torpedoImg = new Image("File:./images/torpedo.png");
@@ -154,12 +157,12 @@ public class Submarine extends Application {
                         }
                     // rotate left
                     } else if (e.getCode().equals(KeyCode.LEFT)) {
-                        if (playerIsAlive) {
+                        if (player.getAlive()) {
                             submarineView.setRotate(submarineView.getRotate() - 5);
                         }
                     // rotate right
                     } else if (e.getCode().equals(KeyCode.RIGHT)) {
-                        if (playerIsAlive) {
+                        if (player.getAlive()) {
                             submarineView.setRotate(submarineView.getRotate() + 5);
                         }
                     }
@@ -182,7 +185,7 @@ public class Submarine extends Application {
             public void handle(long currentNanoTime) {
 
                 // generate new enemy at random interval
-                if (Math.random() < 0.01) {
+                if (Math.random() < 0.005 + 0.0002 * killCount) {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
