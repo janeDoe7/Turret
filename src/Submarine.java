@@ -29,7 +29,7 @@ public class Submarine extends Application {
     private static boolean press = true;
     private static ArrayList<Enemy> enemies = new ArrayList<>();
     private static double w, h;
-    ImageView submarineView = new ImageView();
+    private static ImageView submarineView = new ImageView();
     private static int killCount = 0;
 
 
@@ -43,23 +43,44 @@ public class Submarine extends Application {
 
     public void spawnNewEnemy(Image enemySubImage) {
         double theta = Math.random() * 360;
-        double target_x = w / 2;
-        double target_y = h / 2;
+        double target_x = (w - enemySubImage.getWidth()) / 2;
+        double target_y = (h - enemySubImage.getHeight()) / 2;
         double pos_x = (w - enemySubImage.getWidth()) / 2 + 500 * Math.sin(Math.PI / 180 * theta);
         double pos_y = (h - enemySubImage.getHeight()) / 2 - 500 * Math.cos(Math.PI / 180 * theta);
-        enemies.add(new Enemy(enemySubImage, pane, target_x, target_y, pos_x, pos_y, theta, 1.0));
+        enemies.add(new Enemy(enemySubImage,
+                submarineView, pane, enemies.size(), target_x, target_y, pos_x, pos_y, theta, 1.0));
+        enemies.get(enemies.size() - 1).animate();
     }
 
     //tests collision between two objects. destroys both if they collide.
-    private void testCollision(ImageView imageView1, ImageView imageView2, boolean isPlayer, int index) {
+    public static void testCollision(ImageView imageView1, ImageView imageView2, boolean isPlayer, int index) {
         if (imageView1.getBoundsInParent().intersects(imageView2.getBoundsInParent())) {
             pane.getChildren().remove(imageView1);
             pane.getChildren().remove(imageView2);
             if (isPlayer) {
-                player.setAlive(false);
+                try {
+                    player.setAlive(false);
+                    enemies.get(index).setAlive(false);
+                    enemies.remove(index);
+
+                for (int i = index; i < enemies.size(); i++) {
+                    enemies.get(i).setIndex(i);
+                }
+
+                enemies.get(index).setAlive(true);
+                } catch (IndexOutOfBoundsException e) {}
+                imageView1.setImage(null);
                 pane.getChildren().remove(submarineView);
             } else {
-                enemies.remove(enemies.get(index));
+                enemies.get(index).setAlive(false);
+                enemies.remove(index);
+                for (int i = index; i < enemies.size(); i++) {
+                    enemies.get(i).setIndex(i);
+                }
+                enemies.get(index).setAlive(true);
+                imageView2.setImage(null);
+                pane.getChildren().remove(imageView1);
+                pane.getChildren().remove(imageView2);
                 killCount++;
             }
         }
@@ -147,13 +168,14 @@ public class Submarine extends Application {
                                         pane.getChildren().add(torpedoView);
                                         for (int i = 0; i < enemies.size(); i++) {
                                             testCollision(torpedoView,
-                                                    enemies.get(i).getImageView(), false, 0);
+                                                    enemies.get(i).getImageView(), false, i);
                                         }
                                     }
                                 }
                             }.start();
                         } else {
                             pane.getChildren().add(submarineView);
+                            player.setAlive(true);
                         }
                     // rotate left
                     } else if (e.getCode().equals(KeyCode.LEFT)) {
@@ -185,7 +207,7 @@ public class Submarine extends Application {
             public void handle(long currentNanoTime) {
 
                 // generate new enemy at random interval
-                if (Math.random() < 0.005 + 0.0002 * killCount) {
+                if (Math.random() < 0.005 + 0.0002 * killCount && player.getAlive()) {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 

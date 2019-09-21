@@ -4,25 +4,37 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Enemy {
-    private ImageView imgView;
+    private ImageView imgView, playerView;
     private Pane pane;
+    private int index;
     private Point target;
     private Point[] path;
     private int pathCounter = 0; // how many points have we looked through?
     private double speed;
+    private boolean isAlive = true;
 
-    public Enemy(Image img,
-                 Pane pane, double target_x, double target_y, double pos_x, double pos_y, double theta, double speed)  {
+    public Enemy(Image img, ImageView playerView, Pane pane,
+                 int index, double target_x, double target_y, double pos_x, double pos_y, double theta, double speed)  {
         this.imgView = new ImageView(img);
+        this.playerView = playerView;
         this.pane = pane;
+        this.index = index;
         this.imgView.setX(pos_x);
         this.imgView.setY(pos_y);
         this.target = new Point((int)target_x, (int)target_y);
         this.speed = speed;
         this.path = constructPoints((int)pos_x, (int)pos_y);
         this.imgView.setRotate(theta + 180);
-        animate();
     }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
 
     private Point[] constructPoints(int start_x, int start_y) {
         double internal_speed_constant = 500.0;
@@ -49,9 +61,11 @@ public class Enemy {
         pane.getChildren().add(imgView);
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
+                if (!isAlive) { this.stop(); }
                 Point p = getNextLocation();
                 imgView.setX(p.getX());
                 imgView.setY(p.getY());
+                Submarine.testCollision(imgView, playerView, true, index);
             }
         }.start();
     }
