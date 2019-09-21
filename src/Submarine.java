@@ -104,7 +104,6 @@ public class Submarine extends Application {
             }
         }
 
-
         w = screenSize.getWidth();
         h = screenSize.getHeight();
         Canvas canvas = new Canvas(w, h);
