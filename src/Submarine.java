@@ -26,7 +26,7 @@ public class Submarine extends Application {
     private static Canvas canvas = new Canvas(1600, 900);
     private static Pane pane = new Pane();
     private static boolean press = true, playerIsAlive = true;
-    private static ArrayList<Boolean> enemyIsAlive;
+    private static ArrayList<Enemy> enemies;
     private static double w, h;
 
     public static void main(String[] args) {
@@ -43,9 +43,8 @@ public class Submarine extends Application {
         double target_y = h / 2;
         double pos_x = w / 2 + 800 * Math.sin(theta);
         double pos_y = h / 2 - 800 * Math.cos(theta);
-        Enemy enemy = new Enemy(enemySubImage, target_x, target_y, pos_x, pos_y, theta, 1);
-        pane.getChildren().add(enemy);
-        enemyIsAlive.add(true);
+        enemies.add(new Enemy(enemySubImage, target_x, target_y, pos_x, pos_y, theta, 1));
+        pane.getChildren().add(enemies.get(enemies.size() - 1));
     }
 
     //tests collision between two objects. destroys both if they collide.
@@ -56,7 +55,7 @@ public class Submarine extends Application {
             if (isPlayer) {
                 playerIsAlive = false;
             } else {
-                enemyIsAlive.set(index, Boolean.FALSE);
+                enemies.remove(enemies.get(index));
             }
         }
     }
@@ -141,8 +140,8 @@ public class Submarine extends Application {
                                     torpedoView.setY(torpedoView.getY() -
                                             10 * Math.cos(Math.PI / 180 * rotate));
                                     pane.getChildren().add(torpedoView);
-                                    if (enemyIsAlive.get(0)) {
-                                        testCollision(torpedoView, enemySubmarineView, false, 0);
+                                    for (int i = 0; i < enemies.size(); i++) {
+                                        testCollision(torpedoView, enemies.get(i).getImgView(), false, 0);
                                     }
                                 }
                             }
@@ -172,15 +171,11 @@ public class Submarine extends Application {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
 
+                // generate new enemy at random interval
                 if (Math.random() < 0.016666) {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                if (enemyIsAlive.get(0)) {
-                    pane.getChildren().remove(enemySubmarineView);
-                    enemySubmarineView.setY(enemySubmarineView.getY() + 1);
-                    pane.getChildren().add(enemySubmarineView);
-                }
             }
         }.start();
 
