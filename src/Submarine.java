@@ -47,8 +47,7 @@ public class Submarine extends Application {
         double target_y = h / 2;
         double pos_x = (w - enemySubImage.getWidth()) / 2 + 500 * Math.sin(Math.PI / 180 * theta);
         double pos_y = (h - enemySubImage.getHeight()) / 2 - 500 * Math.cos(Math.PI / 180 * theta);
-        enemies.add(new Enemy(enemySubImage, target_x, target_y, pos_x, pos_y, theta, 1));
-        pane.getChildren().add(enemies.get(enemies.size() - 1).getImageView());
+        enemies.add(new Enemy(enemySubImage, pane, target_x, target_y, pos_x, pos_y, theta, 1.0));
     }
 
     //tests collision between two objects. destroys both if they collide.
@@ -107,6 +106,7 @@ public class Submarine extends Application {
         submarineView.setX((w - submarineView.getFitWidth()) / 2);
         submarineView.setY((h - submarineView.getFitHeight()) / 2);
         pane.getChildren().add(submarineView);
+        player = new Player(submarineView);
 
         // handle key pressing
         subScene.setOnKeyPressed (
