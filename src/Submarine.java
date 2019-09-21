@@ -64,7 +64,7 @@ public class Submarine extends Application {
         Image waterImg = new Image("File:./images/water.jpg");
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 3; y++) {
-                background.add(new ImageView(waterImg), y, x);
+                background.add(new ImageView(waterImg), x, y);
             }
         }
 
@@ -83,7 +83,6 @@ public class Submarine extends Application {
         initStage.setScene(subScene);
         initStage.setWidth(w);
         initStage.setHeight(h);
-        initStage.show();
 
 
         // launch submarine
@@ -184,5 +183,6 @@ public class Submarine extends Application {
                 }
             }
         }.start();
-    }
+        initStage.show();   
+}
 }
