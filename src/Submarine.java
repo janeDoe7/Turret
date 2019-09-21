@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
@@ -50,7 +51,13 @@ public class Submarine extends Application {
         pane.getChildren().add(submarineView);
 
         scene.setOnKeyPressed(
-                event -> submarineView.setRotate(submarineView.getRotate() + 90)
+                e -> {
+                    if (e.getCode().equals(KeyCode.LEFT)) {
+                        submarineView.setRotate(submarineView.getRotate() - 15);
+                    } else if (e.getCode().equals(KeyCode.RIGHT)) {
+                        submarineView.setRotate(submarineView.getRotate() + 15);
+                    }
+                }
         );
     }
 
