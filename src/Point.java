@@ -9,7 +9,7 @@ public class Point {
     }
 
     int getX() { return x; }
-    int getY() { return Y; }
+    int getY() { return y; }
 
     void setX(int x) { this.x = x; }
     void setY(int y) { this.y = y; }
