@@ -75,6 +75,7 @@ public class Submarine extends Application {
                 } catch (IndexOutOfBoundsException e) {}
                 pane.getChildren().remove(imageView);
                 killCount = 0;
+                score = 0;
             } else {
                 enemy.setAlive(false);
                 enemies.remove(enemy);
@@ -103,7 +104,6 @@ public class Submarine extends Application {
                 background.add(new ImageView(waterImg), x, y);
             }
         }
-
 
         w = screenSize.getWidth();
         h = screenSize.getHeight();
@@ -167,9 +167,9 @@ public class Submarine extends Application {
                                         torpedoView.setY(torpedoView.getY() -
                                                 10 * Math.cos(Math.PI / 180 * rotate));
                                         pane.getChildren().add(torpedoView);
-                                        for (Enemy enemy : enemies) {
+                                        for (Enemy tempEnemy : enemies) {
                                             testCollision(torpedoView,
-                                                    enemy, false);
+                                                    tempEnemy, false);
                                         }
                                     }
                                 }
@@ -221,7 +221,7 @@ public class Submarine extends Application {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                scoreText.setText("Score: " + score);
+                scoreText.setText("Score: " + score + "\n\nPress Shift to Restart");
             }
         }.start();
 
