@@ -221,7 +221,7 @@ public class Submarine extends Application {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                scoreText.setText("Score: " + score);
+                scoreText.setText("Score: " + score + "\n\nPress Shift to Restart");
             }
         }.start();
 
