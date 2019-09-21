@@ -209,7 +209,7 @@ public class Submarine extends Application {
         scoreText.setFont(new Font("Wingdings", 20));
         scoreText.setText("Score: 0");
         scoreText.setX(w * 3 / 4);
-        scoreText.setY(h * 3 / 4);
+        scoreText.setY(h * 1 / 5);
         root.getChildren().add(score);
 
         // main game loop
