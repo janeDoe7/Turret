@@ -205,11 +205,11 @@ public class Submarine extends Application {
         ImageView enemySubmarineView = new ImageView("File:./images/submarine.png");
 
         // Add a score.
-        Text score = new Text();
-        score.setFont(new Font("Wingdings", 20));
-        score.setText("Score: 0");
-        score.setX(w * 3 / 4);
-        score.setY(h * 3 / 4);
+        Text scoreText = new Text();
+        scoreText.setFont(new Font("Wingdings", 20));
+        scoreText.setText("Score: 0");
+        scoreText.setX(w * 3 / 4);
+        scoreText.setY(h * 3 / 4);
         root.getChildren().add(score);
 
         // main game loop
@@ -221,7 +221,7 @@ public class Submarine extends Application {
                     spawnNewEnemy(enemySubmarineView.getImage());
                 }
 
-                score.setText("Score: " + score);
+                scoreText.setText("Score: " + score);
             }
         }.start();
 
